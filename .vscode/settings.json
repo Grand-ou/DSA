@@ -37,11 +37,13 @@
         "iostream": "cpp",
         "stdio.h": "c",
         "string.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "type_traits": "c"
     },
     "code-runner.runInTerminal": true,
     "code-runner.executorMap":{
         "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt -std=c11 && $dir$fileNameWithoutExt", // <-c程式改這裡
         "cpp": "cd $dir && g++ $fileName -o $fileNameWithoutExt -std=c++17 && $dir$fileNameWithoutExt", // <-c++程式改這裡
-    }
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }
