@@ -73,26 +73,31 @@ void kmp_search(char *text, char *pattern)
                     }
                 }
                 start = i;
-            }
-        }
-        else if (mode == 1)
-        {
-            if (q == pattern_start - 1)
-            {
-                cnt++;
-                mode = 1;
+                mode = 0;
             }
         }
         else
         {
-        }
-        while (q > 0 && pattern[q] != text[i])
-        {
-            q = pi[q - 1];
-        }
-        if (pattern[q] == text[i])
-        {
-            q++;
+            while (q > 0 && pattern[q] != text[i])
+            {
+                q = pi[q - 1];
+            }
+            if (pattern[q] == text[i])
+            {
+                q++;
+            }
+
+            if (mode == 0)
+            {
+                if (q == pattern_start - 1)
+                {
+                    cnt++;
+                    mode = 1;
+                }
+            }
+            else if (mode == 1)
+            {
+            }
         }
 
         if (q == m)
