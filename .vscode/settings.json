@@ -38,7 +38,8 @@
         "stdio.h": "c",
         "string.h": "c",
         "stdlib.h": "c",
-        "type_traits": "c"
+        "type_traits": "c",
+        "typeinfo": "c"
     },
     "code-runner.runInTerminal": true,
     "code-runner.executorMap":{
