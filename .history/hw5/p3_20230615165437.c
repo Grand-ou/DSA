@@ -10,40 +10,28 @@ enum Color
 struct Node
 {
     int data;
-    int id;
     enum Color color;
     struct Node *parent;
     struct Node *left;
     struct Node *right;
 };
 
-// struct Node *createNode(int data)
-// {
-//     struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
-//     newNode->data = data;
-//     newNode->id = id;
-//     newNode->color = RED;
-//     newNode->parent = NULL;
-//     newNode->left = NULL;
-//     newNode->right = NULL;
-//     return newNode;
-// }
-void initialNode(struct Node *newNode, int data, int id)
+struct Node *createNode(int data)
 {
+    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
     newNode->data = data;
-    newNode->id = id;
+
     newNode->color = RED;
     newNode->parent = NULL;
     newNode->left = NULL;
     newNode->right = NULL;
+    return newNode;
 }
+
 struct Node *bstInsert(struct Node *root, struct Node *newNode)
 {
     if (root == NULL)
-    {
-        newNode->color = BLACK;
         return newNode;
-    }
 
     if (newNode->data < root->data)
     {
@@ -302,7 +290,6 @@ void inorderTraversal(struct Node *root)
         return;
 
     inorderTraversal(root->left);
-    printf(" hi ");
     printf("%d ", root->data);
     inorderTraversal(root->right);
 }
@@ -332,10 +319,9 @@ int main()
             A[i].data = b;
             B[i].data = a;
         }
-        initialNode(&save[N], A[i].data - B[i].data, i);
-        root = bstInsert(root, &save[N]);
-    }
-    inorderTraversal(root);
+        save[N].data = A[i].data - B[i].data;
+        }
+
     int P, t, c, d, e, f, p1, p2;
     for (int i = 0; i < N; i++)
     {
@@ -355,7 +341,23 @@ int main()
             B[i - 1].data = p1;
         }
     }
+    scanf("%d %d", &N, &M);
+    root = bstInsert(root, createNode(7));
+    root = bstInsert(root, createNode(3));
+    root = bstInsert(root, createNode(18));
+    root = bstInsert(root, createNode(10));
+    root = bstInsert(root, createNode(22));
+    root = bstInsert(root, createNode(8));
+    root = bstInsert(root, createNode(11));
+    root = bstInsert(root, createNode(26));
+
+    printf("Inorder traversal before deletion: ");
+    inorderTraversal(root);
+
     deleteNode(&root, 18);
+
+    printf("\nInorder traversal after deletion: ");
+    inorderTraversal(root);
 
     return 0;
 }

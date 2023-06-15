@@ -41,7 +41,7 @@ struct Node *bstInsert(struct Node *root, struct Node *newNode)
 {
     if (root == NULL)
     {
-        newNode->color = BLACK;
+        newNode->color = RED;
         return newNode;
     }
 

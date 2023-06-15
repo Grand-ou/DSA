@@ -41,7 +41,7 @@ struct Node *bstInsert(struct Node *root, struct Node *newNode)
 {
     if (root == NULL)
     {
-        newNode->color = BLACK;
+        newNode->color = RED;
         return newNode;
     }
 
@@ -302,7 +302,6 @@ void inorderTraversal(struct Node *root)
         return;
 
     inorderTraversal(root->left);
-    printf(" hi ");
     printf("%d ", root->data);
     inorderTraversal(root->right);
 }

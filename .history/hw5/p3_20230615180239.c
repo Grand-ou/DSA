@@ -17,33 +17,22 @@ struct Node
     struct Node *right;
 };
 
-// struct Node *createNode(int data)
-// {
-//     struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
-//     newNode->data = data;
-//     newNode->id = id;
-//     newNode->color = RED;
-//     newNode->parent = NULL;
-//     newNode->left = NULL;
-//     newNode->right = NULL;
-//     return newNode;
-// }
-void initialNode(struct Node *newNode, int data, int id)
+struct Node *createNode(int data)
 {
+    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
     newNode->data = data;
     newNode->id = id;
     newNode->color = RED;
     newNode->parent = NULL;
     newNode->left = NULL;
     newNode->right = NULL;
+    return newNode;
 }
+
 struct Node *bstInsert(struct Node *root, struct Node *newNode)
 {
     if (root == NULL)
-    {
-        newNode->color = BLACK;
         return newNode;
-    }
 
     if (newNode->data < root->data)
     {
@@ -302,7 +291,6 @@ void inorderTraversal(struct Node *root)
         return;
 
     inorderTraversal(root->left);
-    printf(" hi ");
     printf("%d ", root->data);
     inorderTraversal(root->right);
 }
@@ -332,7 +320,7 @@ int main()
             A[i].data = b;
             B[i].data = a;
         }
-        initialNode(&save[N], A[i].data - B[i].data, i);
+        save[N].data = A[i].data - B[i].data;
         root = bstInsert(root, &save[N]);
     }
     inorderTraversal(root);
@@ -355,7 +343,14 @@ int main()
             B[i - 1].data = p1;
         }
     }
+
+    printf("Inorder traversal before deletion: ");
+    inorderTraversal(root);
+
     deleteNode(&root, 18);
+
+    printf("\nInorder traversal after deletion: ");
+    inorderTraversal(root);
 
     return 0;
 }

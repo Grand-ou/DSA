@@ -28,7 +28,7 @@ struct Node
 //     newNode->right = NULL;
 //     return newNode;
 // }
-void initialNode(struct Node *newNode, int data, int id)
+struct Node initialNode(struct Node *, int data, int id)
 {
     newNode->data = data;
     newNode->id = id;
@@ -36,14 +36,12 @@ void initialNode(struct Node *newNode, int data, int id)
     newNode->parent = NULL;
     newNode->left = NULL;
     newNode->right = NULL;
+    return newNode;
 }
 struct Node *bstInsert(struct Node *root, struct Node *newNode)
 {
     if (root == NULL)
-    {
-        newNode->color = BLACK;
         return newNode;
-    }
 
     if (newNode->data < root->data)
     {
@@ -302,7 +300,6 @@ void inorderTraversal(struct Node *root)
         return;
 
     inorderTraversal(root->left);
-    printf(" hi ");
     printf("%d ", root->data);
     inorderTraversal(root->right);
 }
@@ -332,7 +329,7 @@ int main()
             A[i].data = b;
             B[i].data = a;
         }
-        initialNode(&save[N], A[i].data - B[i].data, i);
+        save[N].data = A[i].data - B[i].data;
         root = bstInsert(root, &save[N]);
     }
     inorderTraversal(root);
