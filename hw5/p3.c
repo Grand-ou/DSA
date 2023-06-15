@@ -158,11 +158,129 @@ void fixViolation(struct Node **root, struct Node *newNode)
     (*root)->color = BLACK;
 }
 
-void insert(struct Node **root, int data)
+void deleteFixUp(struct Node **root, struct Node *node)
 {
-    struct Node *newNode = createNode(data);
-    *root = bstInsert(*root, newNode);
-    fixViolation(root, newNode);
+    while (node != *root && node->color == BLACK)
+    {
+        if (node == node->parent->left)
+        {
+            struct Node *sibling = node->parent->right;
+
+            if (sibling->color == RED)
+            {
+                sibling->color = BLACK;
+                node->parent->color = RED;
+                leftRotate(root, node->parent);
+                sibling = node->parent->right;
+            }
+
+            if (sibling->left->color == BLACK && sibling->right->color == BLACK)
+            {
+                sibling->color = RED;
+                node = node->parent;
+            }
+            else
+            {
+                if (sibling->right->color == BLACK)
+                {
+                    sibling->left->color = BLACK;
+                    sibling->color = RED;
+                    rightRotate(root, sibling);
+                    sibling = node->parent->right;
+                }
+
+                sibling->color = node->parent->color;
+                node->parent->color = BLACK;
+                sibling->right->color = BLACK;
+                leftRotate(root, node->parent);
+                node = *root;
+            }
+        }
+        else
+        {
+            struct Node *sibling = node->parent->left;
+
+            if (sibling->color == RED)
+            {
+                sibling->color = BLACK;
+                node->parent->color = RED;
+                rightRotate(root, node->parent);
+                sibling = node->parent->left;
+            }
+
+            if (sibling->left->color == BLACK && sibling->right->color == BLACK)
+            {
+                sibling->color = RED;
+                node = node->parent;
+            }
+            else
+            {
+                if (sibling->left->color == BLACK)
+                {
+                    sibling->right->color = BLACK;
+                    sibling->color = RED;
+                    leftRotate(root, sibling);
+                    sibling = node->parent->left;
+                }
+
+                sibling->color = node->parent->color;
+                node->parent->color = BLACK;
+                sibling->left->color = BLACK;
+                rightRotate(root, node->parent);
+                node = *root;
+            }
+        }
+    }
+
+    node->color = BLACK;
+}
+
+struct Node *minValueNode(struct Node *node)
+{
+    struct Node *current = node;
+
+    while (current->left != NULL)
+        current = current->left;
+
+    return current;
+}
+
+struct Node *bstDelete(struct Node *root, int data)
+{
+    if (root == NULL)
+        return root;
+
+    if (data < root->data)
+        root->left = bstDelete(root->left, data);
+    else if (data > root->data)
+        root->right = bstDelete(root->right, data);
+    else
+    {
+        if (root->left == NULL)
+        {
+            struct Node *temp = root->right;
+            free(root);
+            return temp;
+        }
+        else if (root->right == NULL)
+        {
+            struct Node *temp = root->left;
+            free(root);
+            return temp;
+        }
+
+        struct Node *temp = minValueNode(root->right);
+        root->data = temp->data;
+        root->right = bstDelete(root->right, temp->data);
+    }
+
+    return root;
+}
+
+void deleteNode(struct Node **root, int data)
+{
+    struct Node *node = bstDelete(*root, data);
+    deleteFixUp(root, node);
 }
 
 void inorderTraversal(struct Node *root)
@@ -179,18 +297,22 @@ int main()
 {
     struct Node *root = NULL;
 
-    insert(&root, 7);
-    insert(&root, 3);
-    insert(&root, 18);
-    insert(&root, 10);
-    insert(&root, 22);
-    insert(&root, 8);
-    insert(&root, 11);
-    insert(&root, 26);
+    root = bstInsert(root, createNode(7));
+    root = bstInsert(root, createNode(3));
+    root = bstInsert(root, createNode(18));
+    root = bstInsert(root, createNode(10));
+    root = bstInsert(root, createNode(22));
+    root = bstInsert(root, createNode(8));
+    root = bstInsert(root, createNode(11));
+    root = bstInsert(root, createNode(26));
 
-    printf("Inorder traversal of the Red-Black Tree: ");
+    printf("Inorder traversal before deletion: ");
     inorderTraversal(root);
-    printf("\n");
+
+    deleteNode(&root, 18);
+
+    printf("\nInorder traversal after deletion: ");
+    inorderTraversal(root);
 
     return 0;
 }
